@@ -1,0 +1,6 @@
+# Backend ASGI (pure-python, compatible Python 3.14 sans build Rust/C).
+starlette>=1.7
+uvicorn>=0.54
+python-multipart>=0.0.32
+# torch, diffusers, numpy, pillow, opencv-python : deja fournis par le python
+# du projet (/Users/macia/.hermes/tools/python-3.14.7+.../bin/python).

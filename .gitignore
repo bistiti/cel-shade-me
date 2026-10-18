@@ -1,0 +1,42 @@
+# Gros fichiers / generes (jamais dans le repo)
+models/
+output/
+bin/
+samples/
+input_photos/
+input_meshes/
+*.apk
+
+# Piste STL / preview Blender abandonnee
+run_preview.sh
+scripts/paint_preview.py
+scripts/make_test_figurine.py
+
+# Android build
+android/.gradle/
+android/.kotlin/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/captures/
+android/app/release/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.cache/
+.hermes/
+
+# OS / editeur
+.DS_Store
+*.swp
+*~
+
+# Specifique a la machine
+RESTORE_MODEL_CONFIG.sh
+
+# Logs runtime
+*.log

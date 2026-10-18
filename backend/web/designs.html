@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Figurine Color - propositions de design</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font:15px/1.4 -apple-system,Segoe UI,Roboto,sans-serif; background:#0b0d12; color:#e8eaed; padding:16px; }
+  .intro { max-width:780px; margin:0 auto 18px; color:#aeb6c2; }
+  .tabs { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:18px; }
+  .tabs button { padding:10px 16px; border-radius:999px; border:1px solid #2a3140; background:#151924; color:#cfd6e2; font-weight:600; cursor:pointer; }
+  .tabs button.on { background:#4a9d6b; color:#fff; border-color:#4a9d6b; }
+  .stage { display:flex; justify-content:center; }
+
+  /* Cadre telephone */
+  .phone { width:360px; max-width:100%; border-radius:28px; overflow:hidden; border:10px solid #000; box-shadow:0 20px 60px rgba(0,0,0,.6); }
+  .screen { padding:16px; border-bottom:4px solid rgba(0,0,0,.25); }
+  .scr-label { font-size:11px; letter-spacing:.08em; text-transform:uppercase; opacity:.6; margin-bottom:8px; }
+  h3 { font-size:17px; margin-bottom:4px; }
+  .muted { opacity:.65; font-size:13px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .btn { padding:10px 14px; border-radius:12px; font-weight:600; display:inline-block; }
+  .chip { padding:6px 10px; border-radius:999px; font-size:12px; border:1px solid currentColor; }
+  .chip.on { background:currentColor; }
+  .chip.on span { color:#fff; mix-blend-mode:difference; }
+  .sw { width:34px; height:34px; border-radius:8px; display:inline-block; border:2px solid rgba(255,255,255,.3); }
+  .bigbtn { text-align:center; padding:18px; border-radius:16px; font-weight:700; font-size:16px; }
+  .folder { display:flex; justify-content:space-between; padding:12px; border-radius:10px; margin-bottom:6px; }
+  .thumb { height:120px; border-radius:12px; background:linear-gradient(135deg,#333,#555); display:flex; align-items:center; justify-content:center; opacity:.8; }
+  .grid { display:grid; grid-template-columns:repeat(6,1fr); gap:5px; }
+  .seg { display:flex; border-radius:10px; overflow:hidden; border:1px solid currentColor; width:fit-content; }
+  .seg div { padding:6px 10px; font-size:13px; }
+
+  /* THEME : Atelier sombre */
+  [data-theme=dark] .phone { background:#11151d; }
+  [data-theme=dark] .screen { background:#11151d; color:#e8eaed; }
+  [data-theme=dark] .btn { background:#1c2230; color:#dfe6f0; }
+  [data-theme=dark] .bigbtn { background:#4a9d6b; color:#fff; }
+  [data-theme=dark] .folder { background:#181d28; }
+  [data-theme=dark] .accent { color:#5fd49a; }
+
+  /* THEME : Material clair */
+  [data-theme=light] .phone { background:#f6f4fb; }
+  [data-theme=light] .screen { background:#f6f4fb; color:#1b1b22; border-color:#e5e0f0; }
+  [data-theme=light] .btn { background:#e7e0f7; color:#45307a; }
+  [data-theme=light] .bigbtn { background:#6750a4; color:#fff; }
+  [data-theme=light] .folder { background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+  [data-theme=light] .muted { color:#5b5b66; }
+  [data-theme=light] .accent { color:#6750a4; }
+
+  /* THEME : Etabli hobbyiste */
+  [data-theme=craft] .phone { background:#f3ead7; }
+  [data-theme=craft] .screen { background:#f3ead7; color:#3a2d1f; border-color:#d8c7a6; }
+  [data-theme=craft] .btn { background:#e7d8b6; color:#5a4428; border:1px solid #d8c7a6; }
+  [data-theme=craft] .bigbtn { background:#c0552f; color:#fff; }
+  [data-theme=craft] .folder { background:#fbf5e8; border:1px solid #e0d2b4; }
+  [data-theme=craft] .muted { color:#7a6a51; }
+  [data-theme=craft] .accent { color:#c0552f; }
+</style>
+</head>
+<body>
+<div class="intro">
+  <h2>Figurine Color - 3 pistes de design</h2>
+  <p class="muted">Même app, 3 habillages. Choisis-en un (ou mélange). Flux identique : Dossiers &rarr; Prise/Import (photo unique) &rarr; Couleurs + harmonies &rarr; Résultat &rarr; Réglages.</p>
+</div>
+
+<div class="tabs">
+  <button data-t="dark" class="on">A · Atelier sombre</button>
+  <button data-t="light">B · Material clair</button>
+  <button data-t="craft">C · Établi hobbyiste</button>
+</div>
+
+<div class="stage">
+  <div class="phone" id="phone" data-theme="dark">
+
+    <div class="screen">
+      <div class="scr-label">1 · Dossiers (trier avant/après)</div>
+      <h3>Mes dossiers</h3>
+      <p class="muted">Choisis un dossier avant de photographier. Déplace une photo après rendu.</p>
+      <div style="margin-top:10px">
+        <div class="folder"><span>Gobelins</span><span class="muted">12</span></div>
+        <div class="folder"><span>Démons</span><span class="muted">4</span></div>
+        <div class="folder"><span>À trier</span><span class="muted">7</span></div>
+      </div>
+      <div class="row" style="margin-top:8px"><span class="btn">+ Nouveau dossier</span></div>
+    </div>
+
+    <div class="screen">
+      <div class="scr-label">2 · Prise / Import (une seule photo)</div>
+      <h3>Dossier : <span class="accent">Gobelins</span></h3>
+      <div class="row" style="margin-top:10px">
+        <div class="bigbtn" style="flex:1">📷 Prendre une photo</div>
+      </div>
+      <div class="row" style="margin-top:8px"><span class="btn">+ Importer une photo</span></div>
+      <p class="muted" style="margin-top:8px">Pas de lot : une figurine à la fois.</p>
+    </div>
+
+    <div class="screen">
+      <div class="scr-label">3 · Couleurs + harmonies</div>
+      <div class="thumb" style="margin-bottom:10px">photo de la figurine</div>
+      <h3>Couleur principale</h3>
+      <div class="row"><span class="sw" style="background:#922125"></span><span>69.009 SZ Red</span></div>
+      <p class="muted" style="margin:10px 0 4px">Harmonie (remplit les suivantes)</p>
+      <div class="row">
+        <span class="chip on"><span>Custom</span></span>
+        <span class="chip">Analogique</span>
+        <span class="chip">Complément.</span>
+        <span class="chip">Split</span>
+        <span class="chip">Triade</span>
+      </div>
+      <p class="muted" style="margin:12px 0 4px">Secondaire · Accessoires (snap Vallejo le + proche)</p>
+      <div class="row">
+        <span class="sw" style="background:#216b92"></span>
+        <span class="sw" style="background:#6b9221"></span>
+        <span class="sw" style="background:#e0dc14"></span>
+        <span class="btn">+ zone</span>
+      </div>
+      <div class="bigbtn" style="margin-top:14px">Coloriser</div>
+    </div>
+
+    <div class="screen">
+      <div class="scr-label">4 · Résultat (puis trier)</div>
+      <h3>Avant / après</h3>
+      <div class="row">
+        <div class="thumb" style="flex:1">avant</div>
+        <div class="thumb" style="flex:1">peint</div>
+      </div>
+      <p class="muted" style="margin-top:8px">Écart Lab 1.3 · couverture 18.7%</p>
+      <div class="row" style="margin-top:8px"><span class="btn">Enregistrer</span><span class="btn">Déplacer vers un dossier</span></div>
+    </div>
+
+    <div class="screen">
+      <div class="scr-label">5 · Réglages</div>
+      <h3>Langue</h3>
+      <div class="seg accent" style="margin:8px 0"><div>FR</div><div style="opacity:.5">ES</div><div style="opacity:.5">EN</div></div>
+      <h3 style="margin-top:8px">Backend (Mac)</h3>
+      <p class="muted">http://10.1.70.88:8000 · ou adresse Tailscale</p>
+      <h3 style="margin-top:8px">Harmonie par défaut</h3>
+      <p class="muted">Analogique</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const phone = document.getElementById("phone");
+  document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".tabs button").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    phone.setAttribute("data-theme", b.dataset.t);
+  });
+</script>
+</body>
+</html>

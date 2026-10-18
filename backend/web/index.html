@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Figurine Color</title>
+<style>
+  :root { --bg:#0f1115; --card:#1a1e27; --fg:#e8eaed; --mut:#9aa3b2; --acc:#4a9d6b; --bd:#2a303c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.4 -apple-system,Segoe UI,Roboto,sans-serif; }
+  header { padding:14px 16px; font-weight:600; border-bottom:1px solid var(--bd); display:flex; justify-content:space-between; align-items:center; }
+  #status { font-size:12px; color:var(--mut); font-weight:400; }
+  main { padding:16px; max-width:720px; margin:0 auto; }
+  .card { background:var(--card); border:1px solid var(--bd); border-radius:14px; padding:14px; margin-bottom:14px; }
+  h2 { font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:var(--mut); margin:0 0 10px; }
+  label { display:block; font-size:13px; color:var(--mut); margin:10px 0 4px; }
+  input[type=file]{ width:100%; }
+  input[type=text]{ width:100%; padding:10px; border-radius:10px; border:1px solid var(--bd); background:#11151d; color:var(--fg); }
+  img.preview { width:100%; border-radius:10px; display:block; }
+  .swatches { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:6px; max-height:230px; overflow:auto; }
+  .sw { border:2px solid transparent; border-radius:8px; padding:4px; cursor:pointer; text-align:center; font-size:9px; color:#fff; line-height:1.1; min-height:52px; display:flex; flex-direction:column; justify-content:flex-end; }
+  .sw.sel { border-color:#fff; }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .seg { display:flex; border:1px solid var(--bd); border-radius:10px; overflow:hidden; }
+  .seg button { background:#11151d; color:var(--mut); border:0; padding:8px 12px; font-size:13px; }
+  .seg button.on { background:var(--acc); color:#fff; }
+  button.go { width:100%; padding:14px; border:0; border-radius:12px; background:var(--acc); color:#fff; font-size:16px; font-weight:600; margin-top:12px; }
+  button.go:disabled { opacity:.5; }
+  .result { margin-top:10px; }
+  .metric { font-size:12px; color:var(--mut); margin:6px 0; }
+  .err { color:#ff6b6b; font-size:13px; white-space:pre-wrap; }
+  .pill { font-size:11px; background:#11151d; border:1px solid var(--bd); border-radius:999px; padding:2px 8px; color:var(--mut); }
+</style>
+</head>
+<body>
+<header><span>Figurine Color</span><span id="status">connexion...</span></header>
+<main>
+
+  <div class="card">
+    <h2>1. Photo de la figurine</h2>
+    <input type="file" id="file" accept="image/*" capture="environment">
+    <img id="preview" class="preview" style="display:none;margin-top:10px">
+  </div>
+
+  <div class="card">
+    <h2>2. Couleur Vallejo Mecha</h2>
+    <input type="text" id="search" placeholder="filtrer (nom ou code)...">
+    <div class="swatches" id="swatches"></div>
+    <div class="metric">Sélection : <span id="selcode" class="pill">aucune</span></div>
+  </div>
+
+  <div class="card">
+    <h2>3. Rendu</h2>
+    <div class="row">
+      <div class="seg" id="mode">
+        <button data-m="exact" class="on">Couleur exacte</button>
+        <button data-m="paint">+ rendu peint</button>
+      </div>
+      <div class="seg" id="quality">
+        <button data-q="fast" class="on">Rapide</button>
+        <button data-q="hq">Qualité</button>
+      </div>
+    </div>
+    <button class="go" id="go" disabled>Coloriser</button>
+    <div id="err" class="err"></div>
+    <div id="out"></div>
+  </div>
+
+</main>
+<script>
+// Sécurité innerHTML : toutes les valeurs injectées (codes/noms/hex de palette,
+// URLs et métriques) proviennent UNIQUEMENT du backend local de confiance
+// (données palette de l'utilisateur, ids = uuid hex, noms de fichiers fixes).
+// Aucune entrée tierce non fiable n'est insérée ici -> pas de vecteur XSS.
+const BASE = location.origin;              // servi par le backend -> même origine
+let palette = [], selected = null, mode = "exact", quality = "fast";
+
+const $ = s => document.querySelector(s);
+const statusEl = $("#status");
+
+async function init(){
+  try {
+    const h = await (await fetch(BASE + "/health")).json();
+    statusEl.textContent = `backend ok · MPS ${h.mps} · ${h.palette_size} couleurs`;
+    const p = await (await fetch(BASE + "/palette")).json();
+    palette = p.colors; renderSwatches("");
+  } catch(e){ statusEl.textContent = "backend injoignable"; $("#err").textContent = String(e); }
+}
+
+function renderSwatches(filter){
+  const f = filter.toLowerCase();
+  const host = $("#swatches"); host.innerHTML = "";
+  palette.filter(c => !f || c.code.includes(f) || (c.name||"").toLowerCase().includes(f))
+    .forEach(c => {
+      const d = document.createElement("div");
+      d.className = "sw" + (selected===c.code?" sel":"");
+      d.style.background = c.hex;
+      const lum = (c.rgb[0]*0.299 + c.rgb[1]*0.587 + c.rgb[2]*0.114);
+      d.style.color = lum > 140 ? "#000" : "#fff";
+      d.innerHTML = `<span>${c.code.replace("69.","")}<br>${(c.name||"").slice(0,12)}</span>`;
+      d.onclick = () => { selected = c.code; $("#selcode").textContent = c.code + " " + c.hex; renderSwatches(filter); checkReady(); };
+      host.appendChild(d);
+    });
+}
+
+$("#search").oninput = e => renderSwatches(e.target.value);
+$("#file").onchange = e => {
+  const f = e.target.files[0]; if(!f) return;
+  $("#preview").src = URL.createObjectURL(f); $("#preview").style.display = "block"; checkReady();
+};
+$("#mode").onclick = e => { if(!e.target.dataset.m) return; mode = e.target.dataset.m;
+  [...$("#mode").children].forEach(b => b.classList.toggle("on", b.dataset.m===mode)); };
+$("#quality").onclick = e => { if(!e.target.dataset.q) return; quality = e.target.dataset.q;
+  [...$("#quality").children].forEach(b => b.classList.toggle("on", b.dataset.q===quality)); };
+
+function checkReady(){ $("#go").disabled = !($("#file").files[0] && selected); }
+
+$("#go").onclick = async () => {
+  $("#err").textContent = ""; $("#out").innerHTML = "";
+  const go = $("#go"); go.disabled = true; go.textContent = "traitement...";
+  try {
+    const fd = new FormData();
+    fd.append("file", $("#file").files[0]);
+    fd.append("code", selected);
+    fd.append("do_paint", mode === "paint" ? "true" : "false");
+    fd.append("steps", quality === "hq" ? "26" : "12");
+    fd.append("size", quality === "hq" ? "704" : "640");
+    const r = await fetch(BASE + "/process", { method:"POST", body:fd });
+    const j = await r.json();
+    if(!r.ok){ throw new Error(j.error || ("HTTP " + r.status)); }
+    let html = `<div class="result"><h2>Couleur exacte</h2>
+      <img class="preview" src="${BASE + j.recolor.url}?t=${Date.now()}">
+      <div class="metric">cible ${j.recolor.target_hex} · couverture ${j.recolor.coverage_pct}% · écart Lab ${j.recolor.delta_e}</div></div>`;
+    if(j.paint){ html += `<div class="result"><h2>Rendu peint</h2>
+      <img class="preview" src="${BASE + j.paint.url}?t=${Date.now()}">
+      <div class="metric">${j.paint.steps} pas · ${j.paint.size.join("x")}</div></div>`; }
+    $("#out").innerHTML = html;
+  } catch(e){ $("#err").textContent = "Erreur : " + e.message; }
+  finally { go.textContent = "Coloriser"; go.disabled = false; }
+};
+
+init();
+</script>
+</body>
+</html>

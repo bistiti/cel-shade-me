@@ -1,0 +1,4 @@
+<resources>
+    <!-- Theme minimal cote framework ; l'UI reelle est en Compose (Material3). -->
+    <style name="Theme.FigurineColor" parent="android:Theme.Material.NoActionBar" />
+</resources>

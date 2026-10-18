@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Le backend tourne en HTTP clair sur le LAN (http://<ip-du-mac>:8000).
+     Android bloque le trafic clair par defaut : on l'autorise explicitement. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
