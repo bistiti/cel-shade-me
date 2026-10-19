@@ -1158,11 +1158,11 @@ fun LiveScreen(
             }
             val analysis = androidx.camera.core.ImageAnalysis.Builder()
                 .setBackpressureStrategy(androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .setTargetResolution(android.util.Size(480, 640))
+                .setTargetResolution(android.util.Size(720, 960))
                 .build()
             analysis.setAnalyzer(exec) { img ->
                 try {
-                    val small = prepFrame(img.toBitmap(), img.imageInfo.rotationDegrees, 480)
+                    val small = prepFrame(img.toBitmap(), img.imageInfo.rotationDegrees, 640)
                     val out = runCatching { Renderer.live(ctx, small, codeState.value, 2) }.getOrNull()
                     if (out != null) frame = out
                 } catch (_: Throwable) {

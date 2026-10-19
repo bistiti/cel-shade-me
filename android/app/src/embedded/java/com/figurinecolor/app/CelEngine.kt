@@ -95,7 +95,7 @@ object CelEngine {
      *  figurine (proche du blanc du fond) n'est pas relie au bord -> il est GARDE (remplissage
      *  des trous). Corrige le masque en 'ilots' sur un sujet clair/brillant. Exige un fond uni
      *  DISTINCT de la couleur de la figurine. */
-    private fun liveMask(rgb: Mat, tol: Float = 46f): Mat {
+    private fun liveMask(rgb: Mat, tol: Float = 42f): Mat {
         val h = rgb.rows(); val w = rgb.cols(); val n = h * w
         val b = ByteArray(n * 3); rgb.get(0, 0, b)
         val my = maxOf(3, h / 12); val mx = maxOf(3, w / 12)
@@ -157,6 +157,7 @@ object CelEngine {
         val fg = Mat(h, w, CvType.CV_8U); fg.put(0, 0, fgB)
         Imgproc.morphologyEx(fg, fg, Imgproc.MORPH_OPEN, Mat.ones(3, 3, CvType.CV_8U))
         Imgproc.morphologyEx(fg, fg, Imgproc.MORPH_CLOSE, Mat.ones(9, 9, CvType.CV_8U))
+        Imgproc.dilate(fg, fg, Mat.ones(3, 3, CvType.CV_8U), Point(-1.0, -1.0), 2)
         return fg
     }
 
