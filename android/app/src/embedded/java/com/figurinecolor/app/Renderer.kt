@@ -45,6 +45,9 @@ object Renderer {
         return toPng(out)
     }
 
+    fun live(ctx: Context, bmp: Bitmap, code: String, thick: Int): Bitmap =
+        CelEngine.fillLive(bmp, LocalData.rgbFor(ctx, code), thick)
+
     private fun toPng(bmp: Bitmap): ByteArray {
         val bos = ByteArrayOutputStream()
         bmp.compress(Bitmap.CompressFormat.PNG, 100, bos)

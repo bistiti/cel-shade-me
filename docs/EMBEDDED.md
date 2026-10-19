@@ -27,6 +27,15 @@ Tailscale sur le même téléphone.
 La palette Vallejo (80 réfs) et les harmonies sont embarquées en asset et calculées en
 local, comme le rendu. Le résultat se télécharge vers la galerie du téléphone.
 
+## Aperçu cel en direct
+
+Depuis un dossier, le bouton « Aperçu live » ouvre la caméra et applique le cel en temps
+réel sur ce que tu vises, dans la couleur Vallejo de ton choix. À utiliser sur un fond uni.
+C'est honnêtement un filtre 2D en direct, pas de l'AR 3D : le rendu se recalcule image par
+image, il ne suit pas la figurine en 3D quand tu tournes autour. Le bouton Capturer
+enregistre l'image filtrée comme photo du dossier. Tout est calculé sur le téléphone
+(OpenCV), sans réseau.
+
 ## Différence avec la version Tailscale
 
 Cette version ne fait que le cel déterministe. Le mode réaliste optionnel (FLUX.1 Kontext)

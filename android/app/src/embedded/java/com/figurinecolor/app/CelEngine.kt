@@ -76,6 +76,19 @@ object CelEngine {
         return toBitmap(out)
     }
 
+    /** Variante RAPIDE pour l'apercu live : masque sans k-means (fond uni suppose),
+     *  rend directement un Bitmap. A appeler sur des images reduites. */
+    fun fillLive(bmp: Bitmap, base: IntArray, thick: Int = 2): Bitmap {
+        ensureInit()
+        val rgb = toRgb(bmp)
+        val h = rgb.rows(); val w = rgb.cols()
+        val fg = figureMask(rgb, fast = true)
+        val frac = Core.countNonZero(fg).toDouble() / (h * w)
+        val mask = if (frac > 0.02 && frac < 0.97) fg else Mat(h, w, CvType.CV_8U, Scalar(255.0))
+        val out = posterizeCel(rgb, listOf(mask), listOf(base), true, thick, false)
+        return toBitmap(out)
+    }
+
     // ---- conversions --------------------------------------------------------
 
     private fun toRgb(bmp: Bitmap): Mat {
@@ -93,7 +106,7 @@ object CelEngine {
 
     // ---- masque figurine (port de _figure_mask) -----------------------------
 
-    fun figureMask(rgb: Mat): Mat {
+    fun figureMask(rgb: Mat, fast: Boolean = false): Mat {
         val h = rgb.rows(); val w = rgb.cols(); val n = h * w
         val outer = Mat.zeros(h, w, CvType.CV_8U)
         val seeds = arrayOf(
@@ -115,7 +128,7 @@ object CelEngine {
         var colbg: BooleanArray? = null
         val bgIdx = ArrayList<Int>()
         for (p in 0 until n) if (outB[p].toInt() != 0) bgIdx.add(p)
-        if (bgIdx.size >= 200) {
+        if (!fast && bgIdx.size >= 200) {
             val sampleIdx = if (bgIdx.size > 5000)
                 (0 until 5000).map { bgIdx[it * bgIdx.size / 5000] } else bgIdx
             val ns = sampleIdx.size

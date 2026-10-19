@@ -10,6 +10,7 @@ import androidx.core.content.FileProvider
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
@@ -45,6 +46,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -59,6 +62,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
@@ -210,7 +214,7 @@ fun AppRoot() {
     }
 
     LaunchedEffect(screen) {
-        if ((screen == "colors" || screen == "zones") && palette.isEmpty()) {
+        if ((screen == "colors" || screen == "zones" || screen == "live") && palette.isEmpty()) {
             status = "..."
             runCatching { withContext(Dispatchers.IO) { if (BuildConfig.EMBEDDED) LocalData.palette(ctx) else Api(backend.trim()).palette() } }
                 .onSuccess { palette = it; status = "" }
@@ -251,6 +255,7 @@ fun AppRoot() {
                 "zones" -> t("assign_touch")
                 "result" -> t("result")
                 "settings" -> t("settings")
+                "live" -> t("live_title")
                 else -> t("app_name")
             },
             onBack = when (screen) {
@@ -259,6 +264,7 @@ fun AppRoot() {
                 "zones" -> ({ screen = "colors" })
                 "result" -> ({ screen = "colors" })
                 "settings" -> ({ screen = "folders" })
+                "live" -> ({ screen = "gallery" })
                 else -> null
             },
             onSettings = if (screen == "folders") ({ screen = "settings" }) else null,
@@ -335,7 +341,7 @@ fun AppRoot() {
             }
 
             "gallery" -> Column(Modifier.fillMaxSize().padding(16.dp)) {
-                Row {
+                Row(Modifier.horizontalScroll(rememberScrollState())) {
                     Button(onClick = { startCamera() }) { Text(t("take_photo")) }
                     Spacer(Modifier.size(8.dp))
                     FilledTonalButton(onClick = {
@@ -343,6 +349,10 @@ fun AppRoot() {
                             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                         )
                     }) { Text("+ ${t("import_photo")}") }
+                    if (BuildConfig.EMBEDDED) {
+                        Spacer(Modifier.size(8.dp))
+                        FilledTonalButton(onClick = { screen = "live" }) { Text(t("live_button")) }
+                    }
                 }
                 Spacer(Modifier.height(12.dp))
                 if (photos.isEmpty()) {
@@ -502,6 +512,21 @@ fun AppRoot() {
                     )
                 }
             }
+
+            "live" -> LiveScreen(
+                palette = palette,
+                t = { k -> t(k) },
+                onCapture = { bmp ->
+                    val f0 = currentFolder
+                    if (f0 != null) {
+                        val bos = java.io.ByteArrayOutputStream()
+                        bmp.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, bos)
+                        repo.saveBytes(f0, bos.toByteArray(), "live")
+                        photos = repo.photos(f0)
+                    }
+                    screen = "gallery"
+                },
+            )
 
             "result" -> Column(Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState())) {
                 val r = result
@@ -1099,3 +1124,115 @@ fun parseHex(hex: String): Color {
 }
 
 fun luma(c: Color): Float = 0.299f * c.red + 0.587f * c.green + 0.114f * c.blue
+
+
+@Composable
+fun LiveScreen(
+    palette: List<VColor>,
+    t: (String) -> String,
+    onCapture: (android.graphics.Bitmap) -> Unit,
+) {
+    val ctx = LocalContext.current
+    val owner = remember(ctx) { ctx.findLifecycleOwner() }
+    var granted by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(ctx, Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED
+        )
+    }
+    val permLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted = it }
+    LaunchedEffect(Unit) { if (!granted) permLauncher.launch(Manifest.permission.CAMERA) }
+
+    var code by remember { mutableStateOf(palette.firstOrNull()?.code ?: "69.008") }
+    val codeState = rememberUpdatedState(code)
+    var frame by remember { mutableStateOf<android.graphics.Bitmap?>(null) }
+    val exec = remember { java.util.concurrent.Executors.newSingleThreadExecutor() }
+    DisposableEffect(Unit) { onDispose { exec.shutdown() } }
+
+    if (granted && owner != null) {
+        LaunchedEffect(Unit) {
+            val provider = withContext(Dispatchers.IO) {
+                androidx.camera.lifecycle.ProcessCameraProvider.getInstance(ctx).get()
+            }
+            val analysis = androidx.camera.core.ImageAnalysis.Builder()
+                .setBackpressureStrategy(androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .setTargetResolution(android.util.Size(480, 640))
+                .build()
+            analysis.setAnalyzer(exec) { img ->
+                try {
+                    val small = prepFrame(img.toBitmap(), img.imageInfo.rotationDegrees, 480)
+                    val out = runCatching { Renderer.live(ctx, small, codeState.value, 2) }.getOrNull()
+                    if (out != null) frame = out
+                } catch (_: Throwable) {
+                } finally { img.close() }
+            }
+            try {
+                provider.unbindAll()
+                provider.bindToLifecycle(
+                    owner,
+                    androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA,
+                    analysis
+                )
+            } catch (_: Throwable) {}
+        }
+    }
+
+    Column(Modifier.fillMaxSize().padding(12.dp)) {
+        if (!granted) {
+            Text(t("camera_denied"), color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(16.dp))
+        } else {
+            Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+                val f = frame
+                if (f != null) Image(
+                    bitmap = f.asImageBitmap(), contentDescription = null,
+                    modifier = Modifier.fillMaxWidth()
+                ) else Text(t("live_starting"))
+            }
+            Text(t("live_hint"), color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.padding(vertical = 6.dp))
+            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+                palette.take(40).forEach { c ->
+                    val sel = c.code == code
+                    Box(
+                        Modifier.padding(3.dp).size(36.dp)
+                            .background(
+                                Color(android.graphics.Color.parseColor(c.hex)),
+                                RoundedCornerShape(6.dp)
+                            )
+                            .border(
+                                if (sel) 3.dp else 1.dp,
+                                if (sel) MaterialTheme.colorScheme.primary else Color.Gray,
+                                RoundedCornerShape(6.dp)
+                            )
+                            .clickable { code = c.code }
+                    )
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+            Button(
+                onClick = { frame?.let { onCapture(it) } },
+                enabled = frame != null, modifier = Modifier.fillMaxWidth()
+            ) { Text(t("capture")) }
+        }
+    }
+}
+
+private fun prepFrame(src: android.graphics.Bitmap, rot: Int, maxDim: Int): android.graphics.Bitmap {
+    val scale = maxDim.toFloat() / maxOf(src.width, src.height)
+    val m = android.graphics.Matrix()
+    if (scale < 1f) m.postScale(scale, scale)
+    if (rot != 0) m.postRotate(rot.toFloat())
+    return android.graphics.Bitmap.createBitmap(src, 0, 0, src.width, src.height, m, true)
+}
+
+private fun android.content.Context.findLifecycleOwner(): androidx.lifecycle.LifecycleOwner? {
+    var c: android.content.Context? = this
+    while (c != null) {
+        if (c is androidx.lifecycle.LifecycleOwner) return c
+        c = (c as? android.content.ContextWrapper)?.baseContext
+    }
+    return null
+}
