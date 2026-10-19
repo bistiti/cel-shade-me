@@ -78,3 +78,10 @@ COLOR.md            notes de pipeline et décisions
 
 Prototype fonctionnel et utilisé. Le moteur cel déterministe est la voie active. Les
 deux APK (Tailscale et 100 % embarquée) sont en préparation dans les Releases.
+
+## Installation
+
+- Version Tailscale (app + backend sur le Mac, avec en option le mode réaliste FLUX et
+  sa config modèles) : voir `docs/TAILSCALE.md`.
+- Version 100 % embarquée (tout sur le téléphone, sans serveur ni réseau) : voir
+  `docs/EMBEDDED.md`.
