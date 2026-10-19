@@ -201,7 +201,7 @@ object CelEngine {
         for (p in 0 until n) if (outB[p].toInt() != 0) bgIdx.add(p)
         if (!fast && bgIdx.size >= 200) {
             val sampleIdx = if (bgIdx.size > 5000)
-                (0 until 5000).map { bgIdx[it * bgIdx.size / 5000] } else bgIdx
+                (0 until 5000).map { bgIdx[(it.toLong() * bgIdx.size / 5000L).toInt()] } else bgIdx
             val ns = sampleIdx.size
             val samples = Mat(ns, 3, CvType.CV_32F)
             val sf = FloatArray(ns * 3)
