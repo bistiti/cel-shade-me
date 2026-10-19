@@ -76,17 +76,72 @@ object CelEngine {
         return toBitmap(out)
     }
 
-    /** Variante RAPIDE pour l'apercu live : masque sans k-means (fond uni suppose),
-     *  rend directement un Bitmap. A appeler sur des images reduites. */
+    /** Variante pour l'apercu live : retire le FOND UNI (appris sur le pourtour) puis cel.
+     *  Rend directement un Bitmap. A appeler sur des images reduites. */
     fun fillLive(bmp: Bitmap, base: IntArray, thick: Int = 2): Bitmap {
         ensureInit()
         val rgb = toRgb(bmp)
         val h = rgb.rows(); val w = rgb.cols()
-        val fg = figureMask(rgb, fast = true)
+        val fg = liveMask(rgb)
         val frac = Core.countNonZero(fg).toDouble() / (h * w)
-        val mask = if (frac > 0.02 && frac < 0.97) fg else Mat(h, w, CvType.CV_8U, Scalar(255.0))
+        val mask = if (frac > 0.005) fg else Mat(h, w, CvType.CV_8U, Scalar(255.0))
         val out = posterizeCel(rgb, listOf(mask), listOf(base), true, thick, false)
         return toBitmap(out)
+    }
+
+    /** Masque figurine pour le live : apprend la/les couleur(s) du FOND UNI sur le pourtour
+     *  de l'image (= fond quand la figurine est cadree au centre) et les retire par
+     *  proximite de couleur. Robuste au bruit/gradient d'une vraie camera. Exige un fond uni
+     *  DISTINCT de la couleur de la figurine (sinon la figurine est retiree aussi). */
+    private fun liveMask(rgb: Mat, tol: Float = 52f): Mat {
+        val h = rgb.rows(); val w = rgb.cols(); val n = h * w
+        val b = ByteArray(n * 3); rgb.get(0, 0, b)
+        val my = maxOf(3, h / 12); val mx = maxOf(3, w / 12)
+        val stride = maxOf(1, (h + w) / 500)
+        val sl = ArrayList<Float>(6000)
+        var y = 0
+        while (y < h) {
+            var x = 0
+            while (x < w) {
+                if (y < my || y >= h - my || x < mx || x >= w - mx) {
+                    val p = (y * w + x) * 3
+                    sl.add((b[p].toInt() and 255).toFloat())
+                    sl.add((b[p + 1].toInt() and 255).toFloat())
+                    sl.add((b[p + 2].toInt() and 255).toFloat())
+                }
+                x += stride
+            }
+            y += stride
+        }
+        val cnt = sl.size / 3
+        val fgB = ByteArray(n) { 255.toByte() }
+        if (cnt >= 12) {
+            val samples = Mat(cnt, 3, CvType.CV_32F)
+            samples.put(0, 0, sl.toFloatArray())
+            val k = minOf(3, cnt)
+            val labels = Mat(); val centers = Mat()
+            Core.kmeans(samples, k, labels,
+                TermCriteria(TermCriteria.EPS + TermCriteria.MAX_ITER, 8, 1.0),
+                2, Core.KMEANS_PP_CENTERS, centers)
+            val cf = FloatArray(k * 3); centers.get(0, 0, cf)
+            val tol2 = tol * tol
+            for (p in 0 until n) {
+                val r = (b[p * 3].toInt() and 255).toFloat()
+                val g = (b[p * 3 + 1].toInt() and 255).toFloat()
+                val bl = (b[p * 3 + 2].toInt() and 255).toFloat()
+                var dmin = Float.MAX_VALUE
+                for (c in 0 until k) {
+                    val dr = r - cf[c * 3]; val dg = g - cf[c * 3 + 1]; val db = bl - cf[c * 3 + 2]
+                    val d = dr * dr + dg * dg + db * db
+                    if (d < dmin) dmin = d
+                }
+                if (dmin < tol2) fgB[p] = 0
+            }
+        }
+        val fg = Mat(h, w, CvType.CV_8U); fg.put(0, 0, fgB)
+        Imgproc.morphologyEx(fg, fg, Imgproc.MORPH_OPEN, Mat.ones(3, 3, CvType.CV_8U))
+        Imgproc.morphologyEx(fg, fg, Imgproc.MORPH_CLOSE, Mat.ones(5, 5, CvType.CV_8U))
+        return fg
     }
 
     // ---- conversions --------------------------------------------------------

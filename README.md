@@ -81,7 +81,12 @@ deux APK (Tailscale et 100 % embarquée) sont en préparation dans les Releases.
 
 ## Installation
 
-- Version Tailscale (app + backend sur le Mac, avec en option le mode réaliste FLUX et
-  sa config modèles) : voir `docs/TAILSCALE.md`.
-- Version 100 % embarquée (tout sur le téléphone, sans serveur ni réseau) : voir
-  `docs/EMBEDDED.md`.
+Une seule APK est distribuée : la version 100 % embarquée (tout sur le téléphone, sans
+serveur ni réseau), dans les Releases. Voir `docs/EMBEDDED.md`.
+
+- Téléchargement : https://github.com/bistiti/cel-shade-me/releases/download/latest/Cel-Shade-Me.apk
+- Elle inclut la coloration Vallejo exacte, le cel déterministe, la peinture au doigt par
+  zones et un aperçu cel en direct (filtre caméra, à viser sur un fond uni).
+
+La version Tailscale (app + backend sur le Mac, avec le mode réaliste FLUX optionnel)
+n'est plus maintenue ; sa doc reste dans `docs/TAILSCALE.md` à titre de référence.
