@@ -212,7 +212,7 @@ fun AppRoot() {
     LaunchedEffect(screen) {
         if ((screen == "colors" || screen == "zones") && palette.isEmpty()) {
             status = "..."
-            runCatching { withContext(Dispatchers.IO) { Api(backend.trim()).palette() } }
+            runCatching { withContext(Dispatchers.IO) { if (BuildConfig.EMBEDDED) LocalData.palette(ctx) else Api(backend.trim()).palette() } }
                 .onSuccess { palette = it; status = "" }
                 .onFailure { status = "${t("connect")}: ${it.message}" }
         }
@@ -220,7 +220,7 @@ fun AppRoot() {
     LaunchedEffect(primary, scheme) {
         val p = primary
         if (p != null && scheme != "custom") {
-            runCatching { withContext(Dispatchers.IO) { Api(backend.trim()).harmony(p, scheme) } }
+            runCatching { withContext(Dispatchers.IO) { if (BuildConfig.EMBEDDED) LocalData.harmony(ctx, p, scheme) else Api(backend.trim()).harmony(p, scheme) } }
                 .onSuccess { derived = it }
                 .onFailure { status = "harmony: ${it.message}" }
         } else if (p != null) {
@@ -452,20 +452,35 @@ fun AppRoot() {
                     onClick = {
                         scope.launch {
                             busy = true; status = ""
-                            runCatching {
-                                withContext(Dispatchers.IO) {
-                                    Api(backend.trim()).celFillStart(photoBytes!!, primary!!, npMode, npThick)
-                                }
-                            }.onSuccess { o ->
-                                val jobId = o.optString("id")
-                                val folder = currentPhoto?.parentFile?.absolutePath ?: ""
-                                val label = currentPhoto?.nameWithoutExtension ?: "figurine"
-                                settings.pending = org.json.JSONObject()
-                                    .put("job", jobId).put("backend", backend.trim())
-                                    .put("folder", folder).put("label", label).toString()
-                                RenderService.start(ctx, backend.trim(), jobId, folder, label)
-                                npJob = jobId; npMsg = t("render_started")
-                            }.onFailure { status = "erreur: ${it.message}" }
+                            if (BuildConfig.EMBEDDED) {
+                                runCatching {
+                                    withContext(Dispatchers.IO) {
+                                        val out = Renderer.fill(ctx, photoBytes!!, primary!!, npThick)
+                                        val dir = currentPhoto!!.parentFile!!
+                                        val f = java.io.File(dir, "${currentPhoto!!.nameWithoutExtension}_peint_${System.currentTimeMillis()}.png")
+                                        f.writeBytes(out); f
+                                    }
+                                }.onSuccess {
+                                    currentFolder?.let { photos = repo.photos(it) }
+                                    android.widget.Toast.makeText(ctx, t("render_done_check"), android.widget.Toast.LENGTH_SHORT).show()
+                                    screen = "gallery"
+                                }.onFailure { status = "erreur: ${it.message}" }
+                            } else {
+                                runCatching {
+                                    withContext(Dispatchers.IO) {
+                                        Api(backend.trim()).celFillStart(photoBytes!!, primary!!, npMode, npThick)
+                                    }
+                                }.onSuccess { o ->
+                                    val jobId = o.optString("id")
+                                    val folder = currentPhoto?.parentFile?.absolutePath ?: ""
+                                    val label = currentPhoto?.nameWithoutExtension ?: "figurine"
+                                    settings.pending = org.json.JSONObject()
+                                        .put("job", jobId).put("backend", backend.trim())
+                                        .put("folder", folder).put("label", label).toString()
+                                    RenderService.start(ctx, backend.trim(), jobId, folder, label)
+                                    npJob = jobId; npMsg = t("render_started")
+                                }.onFailure { status = "erreur: ${it.message}" }
+                            }
                             busy = false
                         }
                     },
@@ -483,6 +498,7 @@ fun AppRoot() {
                         t = { k -> t(k) },
                         onResult = { result = it; screen = "result" },
                         onStatus = { status = it },
+                        onSaved = { currentFolder?.let { photos = repo.photos(it) }; screen = "gallery" },
                     )
                 }
             }
@@ -731,6 +747,7 @@ fun PaintScreen(
     photo: File, bytes: ByteArray, palette: List<VColor>, backend: String, state: PaintState,
     settings: Settings,
     t: (String) -> String, onResult: (ProcResult) -> Unit, onStatus: (String) -> Unit,
+    onSaved: (() -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val ctx = LocalContext.current
@@ -780,7 +797,7 @@ fun PaintScreen(
     LaunchedEffect(harmonyBase, pScheme) {
         val c = harmonyBase
         if (c == null || pScheme == "custom") { pHarmony = emptyList(); return@LaunchedEffect }
-        runCatching { withContext(Dispatchers.IO) { Api(backend.trim()).harmony(c, pScheme) } }
+        runCatching { withContext(Dispatchers.IO) { if (BuildConfig.EMBEDDED) LocalData.harmony(ctx, c, pScheme) else Api(backend.trim()).harmony(c, pScheme) } }
             .onSuccess { pHarmony = it }
             .onFailure { pHarmony = emptyList() }
     }
@@ -1011,19 +1028,31 @@ fun PaintScreen(
                 val json = buildZonesJson()
                 scope.launch {
                     busy = true; onStatus("")
-                    runCatching {
-                        withContext(Dispatchers.IO) { Api(backend.trim()).celZonesStart(bytes, json, qmode, thick) }
-                    }.onSuccess { o ->
-                        val jobId = o.optString("id")
-                        settings.pending = org.json.JSONObject()
-                            .put("job", jobId).put("backend", backend.trim())
-                            .put("folder", photo.parentFile?.absolutePath ?: "")
-                            .put("label", photo.nameWithoutExtension).toString()
-                        RenderService.start(ctx, backend.trim(), jobId,
-                            photo.parentFile?.absolutePath ?: "", photo.nameWithoutExtension)
-                        pendingJobId = jobId
-                        launchedMsg = t("render_started")
-                    }.onFailure { launchedMsg = ""; onStatus("erreur: ${it.message}") }
+                    if (BuildConfig.EMBEDDED) {
+                        runCatching {
+                            withContext(Dispatchers.IO) {
+                                val out = Renderer.zones(ctx, bytes, json, thick)
+                                val dir = photo.parentFile!!
+                                val f = java.io.File(dir, "${photo.nameWithoutExtension}_peint_${System.currentTimeMillis()}.png")
+                                f.writeBytes(out); f
+                            }
+                        }.onSuccess { onSaved?.invoke() }
+                            .onFailure { onStatus("erreur: ${it.message}") }
+                    } else {
+                        runCatching {
+                            withContext(Dispatchers.IO) { Api(backend.trim()).celZonesStart(bytes, json, qmode, thick) }
+                        }.onSuccess { o ->
+                            val jobId = o.optString("id")
+                            settings.pending = org.json.JSONObject()
+                                .put("job", jobId).put("backend", backend.trim())
+                                .put("folder", photo.parentFile?.absolutePath ?: "")
+                                .put("label", photo.nameWithoutExtension).toString()
+                            RenderService.start(ctx, backend.trim(), jobId,
+                                photo.parentFile?.absolutePath ?: "", photo.nameWithoutExtension)
+                            pendingJobId = jobId
+                            launchedMsg = t("render_started")
+                        }.onFailure { launchedMsg = ""; onStatus("erreur: ${it.message}") }
+                    }
                     busy = false
                 }
             },

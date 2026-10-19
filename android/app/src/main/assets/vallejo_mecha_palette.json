@@ -1,0 +1,1122 @@
+{
+  "69.001": {
+    "hex": "#ffffff",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "name": "Pure White",
+    "row": 0,
+    "col": 0,
+    "vallejo_model_color": "70.951",
+    "mr_color": "UG01",
+    "category": "shade"
+  },
+  "69.002": {
+    "hex": "#bfbaa7",
+    "rgb": [
+      191,
+      186,
+      167
+    ],
+    "name": "White Grey",
+    "row": 0,
+    "col": 1,
+    "vallejo_model_color": "70.313",
+    "mr_color": "C69",
+    "category": "shade"
+  },
+  "69.003": {
+    "hex": "#ece2c9",
+    "rgb": [
+      236,
+      226,
+      201
+    ],
+    "name": "Off-White",
+    "row": 0,
+    "col": 2,
+    "vallejo_model_color": "70.820",
+    "mr_color": "UG03",
+    "category": "shade"
+  },
+  "69.004": {
+    "hex": "#e89604",
+    "rgb": [
+      232,
+      150,
+      4
+    ],
+    "name": "Yellow",
+    "row": 0,
+    "col": 3,
+    "vallejo_model_color": "70.953",
+    "mr_color": "-",
+    "category": "shade"
+  },
+  "69.005": {
+    "hex": "#fec693",
+    "rgb": [
+      254,
+      198,
+      147
+    ],
+    "name": "Light Flesh",
+    "row": 0,
+    "col": 4,
+    "vallejo_model_color": "70.928",
+    "mr_color": "-",
+    "category": "shade"
+  },
+  "69.006": {
+    "hex": "#d3755c",
+    "rgb": [
+      211,
+      117,
+      92
+    ],
+    "name": "Pink",
+    "row": 0,
+    "col": 5,
+    "vallejo_model_color": "70.805",
+    "mr_color": "UG10",
+    "category": "shade"
+  },
+  "69.007": {
+    "hex": "#e94917",
+    "rgb": [
+      233,
+      73,
+      23
+    ],
+    "name": "Orange",
+    "row": 0,
+    "col": 6,
+    "vallejo_model_color": "70.851",
+    "mr_color": "-",
+    "category": "shade"
+  },
+  "69.008": {
+    "hex": "#a51f1c",
+    "rgb": [
+      165,
+      31,
+      28
+    ],
+    "name": "Red",
+    "row": 0,
+    "col": 7,
+    "vallejo_model_color": "70.817",
+    "mr_color": "UG04",
+    "category": "shade"
+  },
+  "69.009": {
+    "hex": "#922125",
+    "rgb": [
+      146,
+      33,
+      37
+    ],
+    "name": "SZ Red",
+    "row": 0,
+    "col": 8,
+    "vallejo_model_color": "70.947",
+    "mr_color": "UG12",
+    "category": "shade"
+  },
+  "69.010": {
+    "hex": "#8d2860",
+    "rgb": [
+      141,
+      40,
+      96
+    ],
+    "name": "Magenta",
+    "row": 0,
+    "col": 9,
+    "vallejo_model_color": "70.945",
+    "mr_color": "-",
+    "category": "shade"
+  },
+  "69.011": {
+    "hex": "#5e1520",
+    "rgb": [
+      94,
+      21,
+      32
+    ],
+    "name": "Dark Red",
+    "row": 1,
+    "col": 0,
+    "vallejo_model_color": "70.926",
+    "mr_color": "UG11",
+    "category": "shade"
+  },
+  "69.012": {
+    "hex": "#9369a9",
+    "rgb": [
+      147,
+      105,
+      169
+    ],
+    "name": "Purple",
+    "row": 1,
+    "col": 1,
+    "vallejo_model_color": "-",
+    "mr_color": "UG08",
+    "category": "shade"
+  },
+  "69.013": {
+    "hex": "#111c2e",
+    "rgb": [
+      17,
+      28,
+      46
+    ],
+    "name": "Titan Blue",
+    "row": 1,
+    "col": 2,
+    "vallejo_model_color": "70.807",
+    "mr_color": "UG17",
+    "category": "shade"
+  },
+  "69.014": {
+    "hex": "#475558",
+    "rgb": [
+      71,
+      85,
+      88
+    ],
+    "name": "Grey Green",
+    "row": 1,
+    "col": 3,
+    "vallejo_model_color": "70.904",
+    "mr_color": "C337",
+    "category": "shade"
+  },
+  "69.015": {
+    "hex": "#456771",
+    "rgb": [
+      69,
+      103,
+      113
+    ],
+    "name": "Blue Grey",
+    "row": 1,
+    "col": 4,
+    "vallejo_model_color": "70.901",
+    "mr_color": "C74",
+    "category": "shade"
+  },
+  "69.016": {
+    "hex": "#42617e",
+    "rgb": [
+      66,
+      97,
+      126
+    ],
+    "name": "Light Blue",
+    "row": 1,
+    "col": 5,
+    "vallejo_model_color": "70.902",
+    "mr_color": "UG14",
+    "category": "shade"
+  },
+  "69.017": {
+    "hex": "#09a9d0",
+    "rgb": [
+      9,
+      169,
+      208
+    ],
+    "name": "Sky Blue",
+    "row": 1,
+    "col": 6,
+    "vallejo_model_color": "70.961",
+    "mr_color": "C323",
+    "category": "shade"
+  },
+  "69.018": {
+    "hex": "#005e95",
+    "rgb": [
+      0,
+      94,
+      149
+    ],
+    "name": "Deep Blue",
+    "row": 1,
+    "col": 7,
+    "vallejo_model_color": "70.841",
+    "mr_color": "C72",
+    "category": "shade"
+  },
+  "69.019": {
+    "hex": "#1b2445",
+    "rgb": [
+      27,
+      36,
+      69
+    ],
+    "name": "Blue",
+    "row": 1,
+    "col": 8,
+    "vallejo_model_color": "70.962",
+    "mr_color": "UG02",
+    "category": "shade"
+  },
+  "69.020": {
+    "hex": "#1e245a",
+    "rgb": [
+      30,
+      36,
+      90
+    ],
+    "name": "Electric Blue",
+    "row": 1,
+    "col": 9,
+    "vallejo_model_color": "70.736",
+    "mr_color": "UG13",
+    "category": "shade"
+  },
+  "69.021": {
+    "hex": "#213242",
+    "rgb": [
+      33,
+      50,
+      66
+    ],
+    "name": "Dark Blue",
+    "row": 2,
+    "col": 0,
+    "vallejo_model_color": "70.965",
+    "mr_color": "C322",
+    "category": "shade"
+  },
+  "69.022": {
+    "hex": "#131918",
+    "rgb": [
+      19,
+      25,
+      24
+    ],
+    "name": "Titan Dark Blue",
+    "row": 2,
+    "col": 1,
+    "vallejo_model_color": "70.898",
+    "mr_color": "UG16",
+    "category": "shade"
+  },
+  "69.023": {
+    "hex": "#007682",
+    "rgb": [
+      0,
+      118,
+      130
+    ],
+    "name": "Turquoise",
+    "row": 2,
+    "col": 2,
+    "vallejo_model_color": "70.966",
+    "mr_color": "C72*",
+    "category": "shade"
+  },
+  "69.024": {
+    "hex": "#758a83",
+    "rgb": [
+      117,
+      138,
+      131
+    ],
+    "name": "Stone Grey",
+    "row": 2,
+    "col": 3,
+    "vallejo_model_color": "70.973",
+    "mr_color": "C308",
+    "category": "shade"
+  },
+  "69.025": {
+    "hex": "#b6b8aa",
+    "rgb": [
+      182,
+      184,
+      170
+    ],
+    "name": "Light Green",
+    "row": 2,
+    "col": 4,
+    "vallejo_model_color": "70.832",
+    "mr_color": "C314",
+    "category": "shade"
+  },
+  "69.026": {
+    "hex": "#79836b",
+    "rgb": [
+      121,
+      131,
+      107
+    ],
+    "name": "Green",
+    "row": 2,
+    "col": 5,
+    "vallejo_model_color": "70.885",
+    "mr_color": "UG06",
+    "category": "shade"
+  },
+  "69.027": {
+    "hex": "#5f8664",
+    "rgb": [
+      95,
+      134,
+      100
+    ],
+    "name": "Green Blue",
+    "row": 2,
+    "col": 6,
+    "vallejo_model_color": "70.974",
+    "mr_color": "CG24",
+    "category": "shade"
+  },
+  "69.028": {
+    "hex": "#4e6338",
+    "rgb": [
+      78,
+      99,
+      56
+    ],
+    "name": "Olive Green",
+    "row": 2,
+    "col": 7,
+    "vallejo_model_color": "70.967",
+    "mr_color": "C304",
+    "category": "shade"
+  },
+  "69.029": {
+    "hex": "#646e56",
+    "rgb": [
+      100,
+      110,
+      86
+    ],
+    "name": "Deep Green",
+    "row": 2,
+    "col": 8,
+    "vallejo_model_color": "70.330",
+    "mr_color": "UG07",
+    "category": "shade"
+  },
+  "69.030": {
+    "hex": "#323426",
+    "rgb": [
+      50,
+      52,
+      38
+    ],
+    "name": "Dark Green",
+    "row": 2,
+    "col": 9,
+    "vallejo_model_color": "70.894",
+    "mr_color": "CG23",
+    "category": "shade"
+  },
+  "69.031": {
+    "hex": "#918575",
+    "rgb": [
+      145,
+      133,
+      117
+    ],
+    "name": "Grey Sand",
+    "row": 3,
+    "col": 0,
+    "vallejo_model_color": "70.821",
+    "mr_color": "-",
+    "category": "shade"
+  },
+  "69.032": {
+    "hex": "#b06e22",
+    "rgb": [
+      176,
+      110,
+      34
+    ],
+    "name": "Yellow Ochre",
+    "row": 3,
+    "col": 1,
+    "vallejo_model_color": "70.834",
+    "mr_color": "C109",
+    "category": "shade"
+  },
+  "69.033": {
+    "hex": "#f5bf5b",
+    "rgb": [
+      245,
+      191,
+      91
+    ],
+    "name": "Sand Yellow",
+    "row": 3,
+    "col": 2,
+    "vallejo_model_color": "70.916",
+    "mr_color": "C39",
+    "category": "shade"
+  },
+  "69.034": {
+    "hex": "#6a4a33",
+    "rgb": [
+      106,
+      74,
+      51
+    ],
+    "name": "Brown",
+    "row": 3,
+    "col": 3,
+    "vallejo_model_color": "70.873",
+    "mr_color": "C310",
+    "category": "shade"
+  },
+  "69.035": {
+    "hex": "#2c1f16",
+    "rgb": [
+      44,
+      31,
+      22
+    ],
+    "name": "Chipping Brown",
+    "row": 3,
+    "col": 4,
+    "vallejo_model_color": "70.822",
+    "mr_color": "-",
+    "category": "shade"
+  },
+  "69.036": {
+    "hex": "#797f7d",
+    "rgb": [
+      121,
+      127,
+      125
+    ],
+    "name": "Light Grey",
+    "row": 3,
+    "col": 5,
+    "vallejo_model_color": "70.989",
+    "mr_color": "C338*",
+    "category": "shade"
+  },
+  "69.037": {
+    "hex": "#5e655d",
+    "rgb": [
+      94,
+      101,
+      93
+    ],
+    "name": "Grey",
+    "row": 3,
+    "col": 6,
+    "vallejo_model_color": "71.120",
+    "mr_color": "-",
+    "category": "shade"
+  },
+  "69.038": {
+    "hex": "#5b5b5b",
+    "rgb": [
+      91,
+      91,
+      91
+    ],
+    "name": "Medium Grey",
+    "row": 3,
+    "col": 7,
+    "vallejo_model_color": "70.870",
+    "mr_color": "C335",
+    "category": "shade"
+  },
+  "69.039": {
+    "hex": "#51524c",
+    "rgb": [
+      81,
+      82,
+      76
+    ],
+    "name": "Grey Z",
+    "row": 3,
+    "col": 8,
+    "vallejo_model_color": "70.991",
+    "mr_color": "UG09",
+    "category": "shade"
+  },
+  "69.040": {
+    "hex": "#24292f",
+    "rgb": [
+      36,
+      41,
+      47
+    ],
+    "name": "Phantom Grey",
+    "row": 3,
+    "col": 9,
+    "vallejo_model_color": "70.868",
+    "mr_color": "UG15",
+    "category": "shade"
+  },
+  "69.041": {
+    "hex": "#38302d",
+    "rgb": [
+      56,
+      48,
+      45
+    ],
+    "name": "Dark Grey Green",
+    "row": 4,
+    "col": 0,
+    "vallejo_model_color": "70.862",
+    "mr_color": "CG100",
+    "category": "shade"
+  },
+  "69.042": {
+    "hex": "#000000",
+    "rgb": [
+      0,
+      0,
+      0
+    ],
+    "name": "Pure Black",
+    "row": 4,
+    "col": 1,
+    "vallejo_model_color": "70.950",
+    "mr_color": "-",
+    "category": "shade"
+  },
+  "69.054": {
+    "hex": "#e0dc14",
+    "rgb": [
+      224,
+      220,
+      20
+    ],
+    "name": "Yellow Fluorescent",
+    "row": 4,
+    "col": 2,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "fluo"
+  },
+  "69.055": {
+    "hex": "#e5450e",
+    "rgb": [
+      229,
+      69,
+      14
+    ],
+    "name": "Orange Fluorescent",
+    "row": 4,
+    "col": 3,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "fluo"
+  },
+  "69.056": {
+    "hex": "#e10171",
+    "rgb": [
+      225,
+      1,
+      113
+    ],
+    "name": "Magenta Fluorescent",
+    "row": 4,
+    "col": 4,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "fluo"
+  },
+  "69.057": {
+    "hex": "#27a533",
+    "rgb": [
+      39,
+      165,
+      51
+    ],
+    "name": "Green Fluorescent",
+    "row": 4,
+    "col": 5,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "fluo"
+  },
+  "69.058": {
+    "hex": "#cfcfcf",
+    "rgb": [
+      207,
+      207,
+      207
+    ],
+    "name": "Gunmetal",
+    "row": 4,
+    "col": 6,
+    "vallejo_model_color": "72.054",
+    "mr_color": "UG05",
+    "category": "metallic"
+  },
+  "69.059": {
+    "hex": "#f2e6cc",
+    "rgb": [
+      242,
+      230,
+      204
+    ],
+    "name": "Gold",
+    "row": 4,
+    "col": 7,
+    "vallejo_model_color": "70.793",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.060": {
+    "hex": "#e8e0cf",
+    "rgb": [
+      232,
+      224,
+      207
+    ],
+    "name": "Old Gold",
+    "row": 4,
+    "col": 8,
+    "vallejo_model_color": "70.878",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.061": {
+    "hex": "#e2cebf",
+    "rgb": [
+      226,
+      206,
+      191
+    ],
+    "name": "Copper",
+    "row": 4,
+    "col": 9,
+    "vallejo_model_color": "70.999",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.062": {
+    "hex": "#e2d8c8",
+    "rgb": [
+      226,
+      216,
+      200
+    ],
+    "name": "Bronze",
+    "row": 5,
+    "col": 0,
+    "vallejo_model_color": "70.998",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.063": {
+    "hex": "#e0e0e0",
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "name": "Steel",
+    "row": 5,
+    "col": 1,
+    "vallejo_model_color": "70.864",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.064": {
+    "hex": "#ececec",
+    "rgb": [
+      236,
+      236,
+      236
+    ],
+    "name": "Light Steel",
+    "row": 5,
+    "col": 2,
+    "vallejo_model_color": "70.997",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.065": {
+    "hex": "#d7d7d7",
+    "rgb": [
+      215,
+      215,
+      215
+    ],
+    "name": "Dark Steel",
+    "row": 5,
+    "col": 3,
+    "vallejo_model_color": "70.865",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.066": {
+    "hex": "#efd8d0",
+    "rgb": [
+      239,
+      216,
+      208
+    ],
+    "name": "Metallic Red",
+    "row": 5,
+    "col": 4,
+    "vallejo_model_color": "71.070",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.067": {
+    "hex": "#c9cad7",
+    "rgb": [
+      201,
+      202,
+      215
+    ],
+    "name": "Metallic Blue",
+    "row": 5,
+    "col": 5,
+    "vallejo_model_color": "71.071",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.068": {
+    "hex": "#d9e8de",
+    "rgb": [
+      217,
+      232,
+      222
+    ],
+    "name": "Metallic Green",
+    "row": 5,
+    "col": 6,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "metallic"
+  },
+  "69.505": {
+    "hex": "#eb7617",
+    "rgb": [
+      235,
+      118,
+      23
+    ],
+    "name": "Light Rust Wash",
+    "row": 5,
+    "col": 7,
+    "vallejo_model_color": "76.505",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.507": {
+    "hex": "#e15a09",
+    "rgb": [
+      225,
+      90,
+      9
+    ],
+    "name": "Dark Rust Wash",
+    "row": 5,
+    "col": 8,
+    "vallejo_model_color": "76.507",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.515": {
+    "hex": "#c7c7c7",
+    "rgb": [
+      199,
+      199,
+      199
+    ],
+    "name": "Light Grey Wash",
+    "row": 5,
+    "col": 9,
+    "vallejo_model_color": "76.515",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.518": {
+    "hex": "#000000",
+    "rgb": [
+      0,
+      0,
+      0
+    ],
+    "name": "Black Wash",
+    "row": 6,
+    "col": 0,
+    "vallejo_model_color": "76.518",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.521": {
+    "hex": "#6d5a4c",
+    "rgb": [
+      109,
+      90,
+      76
+    ],
+    "name": "Oiled Earth Wash",
+    "row": 6,
+    "col": 1,
+    "vallejo_model_color": "76.521",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.522": {
+    "hex": "#d6bc7f",
+    "rgb": [
+      214,
+      188,
+      127
+    ],
+    "name": "Desert Dust Wash",
+    "row": 6,
+    "col": 2,
+    "vallejo_model_color": "76.522",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.813": {
+    "hex": "#75551a",
+    "rgb": [
+      117,
+      85,
+      26
+    ],
+    "name": "Oil Stains (Gloss)",
+    "row": 6,
+    "col": 3,
+    "vallejo_model_color": "73.813",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.814": {
+    "hex": "#743c3b",
+    "rgb": [
+      116,
+      60,
+      59
+    ],
+    "name": "Fuel Stains (Gloss)",
+    "row": 6,
+    "col": 4,
+    "vallejo_model_color": "73.814",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.817": {
+    "hex": "#c03d2b",
+    "rgb": [
+      192,
+      61,
+      43
+    ],
+    "name": "Petrol Spills (Gloss)",
+    "row": 6,
+    "col": 5,
+    "vallejo_model_color": "73.817",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.818": {
+    "hex": "#63351b",
+    "rgb": [
+      99,
+      53,
+      27
+    ],
+    "name": "Brown Eng. Soot (Matt)",
+    "row": 6,
+    "col": 6,
+    "vallejo_model_color": "73.818",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "69.821": {
+    "hex": "#6a342a",
+    "rgb": [
+      106,
+      52,
+      42
+    ],
+    "name": "Rust Texture (Matt)",
+    "row": 6,
+    "col": 7,
+    "vallejo_model_color": "73.821",
+    "mr_color": "-",
+    "category": "weathering"
+  },
+  "70.640": {
+    "hex": "#ffffff",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "name": "White Primer",
+    "row": 6,
+    "col": 8,
+    "vallejo_model_color": "70.600",
+    "mr_color": "-",
+    "category": "primer"
+  },
+  "70.641": {
+    "hex": "#c4c4c4",
+    "rgb": [
+      196,
+      196,
+      196
+    ],
+    "name": "Grey Primer",
+    "row": 6,
+    "col": 9,
+    "vallejo_model_color": "70.601",
+    "mr_color": "-",
+    "category": "primer"
+  },
+  "70.642": {
+    "hex": "#030303",
+    "rgb": [
+      3,
+      3,
+      3
+    ],
+    "name": "Black Primer",
+    "row": 7,
+    "col": 0,
+    "vallejo_model_color": "70.602",
+    "mr_color": "-",
+    "category": "primer"
+  },
+  "70.643": {
+    "hex": "#efeccb",
+    "rgb": [
+      239,
+      236,
+      203
+    ],
+    "name": "Ivory Primer",
+    "row": 7,
+    "col": 1,
+    "vallejo_model_color": "70.918",
+    "mr_color": "-",
+    "category": "primer"
+  },
+  "70.644": {
+    "hex": "#c2a677",
+    "rgb": [
+      194,
+      166,
+      119
+    ],
+    "name": "Sand Primer",
+    "row": 7,
+    "col": 2,
+    "vallejo_model_color": "70.613",
+    "mr_color": "-",
+    "category": "primer"
+  },
+  "69.701": {
+    "hex": "#ffffff",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "name": "Gloss Varnish",
+    "row": 7,
+    "col": 3,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "auxiliary"
+  },
+  "69.702": {
+    "hex": "#ffffff",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "name": "Matt Varnish",
+    "row": 7,
+    "col": 4,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "auxiliary"
+  },
+  "69.703": {
+    "hex": "#ffffff",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "name": "Satin Varnish",
+    "row": 7,
+    "col": 5,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "auxiliary"
+  },
+  "71.261": {
+    "hex": "#ffffff",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "name": "Airbrush Thinner",
+    "row": 7,
+    "col": 6,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "auxiliary"
+  },
+  "71.262": {
+    "hex": "#ffffff",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "name": "Flow Improver",
+    "row": 7,
+    "col": 7,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "auxiliary"
+  },
+  "73.212": {
+    "hex": "#ffffff",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "name": "Decal Softener",
+    "row": 7,
+    "col": 8,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "auxiliary"
+  },
+  "73.214": {
+    "hex": "#ffffff",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "name": "Chipping Medium",
+    "row": 7,
+    "col": 9,
+    "vallejo_model_color": "-",
+    "mr_color": "-",
+    "category": "auxiliary"
+  }
+}
