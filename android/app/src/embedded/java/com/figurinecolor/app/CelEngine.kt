@@ -89,11 +89,13 @@ object CelEngine {
         return toBitmap(out)
     }
 
-    /** Masque figurine pour le live : apprend la/les couleur(s) du FOND UNI sur le pourtour
-     *  de l'image (= fond quand la figurine est cadree au centre) et les retire par
-     *  proximite de couleur. Robuste au bruit/gradient d'une vraie camera. Exige un fond uni
-     *  DISTINCT de la couleur de la figurine (sinon la figurine est retiree aussi). */
-    private fun liveMask(rgb: Mat, tol: Float = 52f): Mat {
+    /** Masque figurine pour le live. Apprend la/les couleur(s) du FOND UNI sur le POURTOUR
+     *  de l'image (= fond quand la figurine est cadree au centre), puis ne retire comme fond
+     *  QUE les pixels proches-du-fond ET RELIES AU BORD. Un reflet clair a l'interieur de la
+     *  figurine (proche du blanc du fond) n'est pas relie au bord -> il est GARDE (remplissage
+     *  des trous). Corrige le masque en 'ilots' sur un sujet clair/brillant. Exige un fond uni
+     *  DISTINCT de la couleur de la figurine. */
+    private fun liveMask(rgb: Mat, tol: Float = 46f): Mat {
         val h = rgb.rows(); val w = rgb.cols(); val n = h * w
         val b = ByteArray(n * 3); rgb.get(0, 0, b)
         val my = maxOf(3, h / 12); val mx = maxOf(3, w / 12)
@@ -119,12 +121,14 @@ object CelEngine {
             val samples = Mat(cnt, 3, CvType.CV_32F)
             samples.put(0, 0, sl.toFloatArray())
             val k = minOf(3, cnt)
-            val labels = Mat(); val centers = Mat()
-            Core.kmeans(samples, k, labels,
+            val labelsK = Mat(); val centers = Mat()
+            Core.kmeans(samples, k, labelsK,
                 TermCriteria(TermCriteria.EPS + TermCriteria.MAX_ITER, 8, 1.0),
                 2, Core.KMEANS_PP_CENTERS, centers)
             val cf = FloatArray(k * 3); centers.get(0, 0, cf)
             val tol2 = tol * tol
+            // 1) pixels proches-du-fond (par couleur)
+            val bgColorB = ByteArray(n)
             for (p in 0 until n) {
                 val r = (b[p * 3].toInt() and 255).toFloat()
                 val g = (b[p * 3 + 1].toInt() and 255).toFloat()
@@ -135,12 +139,24 @@ object CelEngine {
                     val d = dr * dr + dg * dg + db * db
                     if (d < dmin) dmin = d
                 }
-                if (dmin < tol2) fgB[p] = 0
+                if (dmin < tol2) bgColorB[p] = 255.toByte()
+            }
+            // 2) composantes connexes : ne garder comme fond que celles reliees au BORD
+            val bgColor = Mat(h, w, CvType.CV_8U); bgColor.put(0, 0, bgColorB)
+            val lbl = Mat()
+            Imgproc.connectedComponents(bgColor, lbl, 8, CvType.CV_32S)
+            val lab = IntArray(n); lbl.get(0, 0, lab)
+            val borderLabels = HashSet<Int>()
+            for (x in 0 until w) { borderLabels.add(lab[x]); borderLabels.add(lab[(h - 1) * w + x]) }
+            for (yy in 0 until h) { borderLabels.add(lab[yy * w]); borderLabels.add(lab[yy * w + w - 1]) }
+            // 3) figure = tout sauf le fond-couleur relie au bord (trous interieurs gardes)
+            for (p in 0 until n) {
+                if (bgColorB[p].toInt() != 0 && borderLabels.contains(lab[p])) fgB[p] = 0
             }
         }
         val fg = Mat(h, w, CvType.CV_8U); fg.put(0, 0, fgB)
         Imgproc.morphologyEx(fg, fg, Imgproc.MORPH_OPEN, Mat.ones(3, 3, CvType.CV_8U))
-        Imgproc.morphologyEx(fg, fg, Imgproc.MORPH_CLOSE, Mat.ones(5, 5, CvType.CV_8U))
+        Imgproc.morphologyEx(fg, fg, Imgproc.MORPH_CLOSE, Mat.ones(9, 9, CvType.CV_8U))
         return fg
     }
 
